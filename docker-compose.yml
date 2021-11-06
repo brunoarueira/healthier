@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:14.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - './infrastructure/docker/.env.database'
+    ports:
+      - '5432:5432'
+  backend:
+    hostname: backend.healthier.local
+    image: healthier/backend:local
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    volumes:
+      - './backend/healthier:/app:delegated'
+    ports:
+      - '5000:5000'
+    env_file:
+      - './infrastructure/docker/.env.dev'
+    depends_on:
+      - database
+
+volumes:
+  postgres_data:

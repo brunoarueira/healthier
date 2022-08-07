@@ -12,15 +12,18 @@ jobs:
     runs-on: ubuntu-22.04
 
   steps:
-    - uses: actions/checkout@v3
-    - uses: ibiqlik/action-yamllint@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Yaml lint
+      uses: ibiqlik/action-yamllint@v3
       with:
         config_file: .yamllint.yml
         no_warnings: true
-    - uses: actions/setup-python@v4
+    - name: Setup python
+      uses: actions/setup-python@v4
       with:
         python-version: '3.8'
         cache: 'poetry'
     - run: poetry install
-    - name: check code style
+    - name: Check code style
       run: flake8 backend/healthier/

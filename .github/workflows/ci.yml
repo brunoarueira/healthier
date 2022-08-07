@@ -39,3 +39,7 @@ jobs:
         uses: TrueBrain/actions-flake8@v2
         with:
           path: 'backend/healthier'
+
+      - name: Check security vulnerabilities
+        working-directory: backend/healthier
+        run: poetry run bandit -r .

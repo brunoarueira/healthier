@@ -13,6 +13,10 @@ jobs:
 
   steps:
     - uses: actions/checkout@v3
+    - uses: ibiqlik/action-yamllint@v3
+      with:
+        config_file: .yamllint.yml
+        no_warnings: true
     - uses: actions/setup-python@v4
       with:
         python-version: '3.8'

@@ -36,5 +36,6 @@ jobs:
         working-directory: backend/healthier
 
       - name: Check code style
-        working-directory: backend/healthier
-        run: poetry run flake8
+        uses: TrueBrain/actions-flake8@v2
+        with:
+          path: 'backend/healthier'

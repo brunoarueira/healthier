@@ -1,0 +1,22 @@
+name: 'CI'
+
+on: [push]
+
+concurrency:
+  group: healthier-backend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint_and_analysis:
+    name: linters and code analysis
+    runs-on: ubuntu-22.04
+
+  steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'
+        cache: 'poetry'
+    - run: poetry install
+    - name: check code style
+      run: flake8 backend/healthier/

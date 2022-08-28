@@ -10,6 +10,9 @@ jobs:
   lint_and_analysis:
     name: linters and code analysis
     runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: backend/healthier
 
     steps:
       - name: Checkout code
@@ -33,7 +36,6 @@ jobs:
           cache: 'poetry'
 
       - run: poetry install --no-root
-        working-directory: backend/healthier
 
       - name: Check code style
         uses: TrueBrain/actions-flake8@v2

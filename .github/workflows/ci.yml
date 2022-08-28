@@ -47,6 +47,7 @@ jobs:
   tests:
     name: tests
     runs-on: ubuntu-22.04
+    needs: lint_and_analysis
     defaults:
       run:
         working-directory: backend/healthier

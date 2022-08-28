@@ -43,3 +43,29 @@ jobs:
       - name: Check security vulnerabilities
         working-directory: backend/healthier
         run: poetry run bandit -r .
+
+  tests:
+    name: tests
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: backend/healthier
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install poetry
+        working-directory: backend/healthier
+        run: pipx install poetry
+
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+          cache-dependency-path: 'backend/healthier/poetry.lock'
+          cache: 'poetry'
+
+      - run: poetry install --no-root
+
+      - run: poetry run pytest

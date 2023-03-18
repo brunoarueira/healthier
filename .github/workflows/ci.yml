@@ -1,0 +1,74 @@
+name: 'CI'
+
+on: [push]
+
+concurrency:
+  group: healthier-backend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint_and_analysis:
+    name: linters and code analysis
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: backend/healthier
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Yaml lint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          config_file: .yamllint.yml
+          no_warnings: true
+
+      - name: Install poetry
+        working-directory: backend/healthier
+        run: pipx install poetry
+
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+          cache-dependency-path: 'backend/healthier/poetry.lock'
+          cache: 'poetry'
+
+      - run: poetry install --no-root
+
+      - name: Check code style
+        uses: TrueBrain/actions-flake8@v2
+        with:
+          path: 'backend/healthier'
+
+      - name: Check security vulnerabilities
+        working-directory: backend/healthier
+        run: poetry run bandit -r .
+
+  tests:
+    name: tests
+    runs-on: ubuntu-22.04
+    needs: lint_and_analysis
+    defaults:
+      run:
+        working-directory: backend/healthier
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install poetry
+        working-directory: backend/healthier
+        run: pipx install poetry
+
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+          cache-dependency-path: 'backend/healthier/poetry.lock'
+          cache: 'poetry'
+
+      - run: poetry install --no-root
+
+      - run: poetry run pytest

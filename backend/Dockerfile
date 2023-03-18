@@ -12,9 +12,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-COPY ./backend/pyproject.toml .
-COPY ./backend/poetry.lock .
-
 COPY ./backend/healthier .
 
 RUN apk add --update --no-cache --virtual .build-deps \

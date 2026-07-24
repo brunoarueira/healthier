@@ -1,4 +1,4 @@
-name: 'CI'
+name: "CI"
 
 on: [push]
 
@@ -9,7 +9,7 @@ concurrency:
 jobs:
   lint_and_analysis:
     name: linters and code analysis
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-26.04
     defaults:
       run:
         working-directory: backend/healthier
@@ -31,16 +31,16 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.8'
-          cache-dependency-path: 'backend/healthier/poetry.lock'
-          cache: 'poetry'
+          python-version: "3.14"
+          cache-dependency-path: "backend/healthier/poetry.lock"
+          cache: "poetry"
 
       - run: poetry install --no-root
 
       - name: Check code style
         uses: TrueBrain/actions-flake8@v2
         with:
-          path: 'backend/healthier'
+          path: "backend/healthier"
 
       - name: Check security vulnerabilities
         working-directory: backend/healthier
@@ -48,7 +48,7 @@ jobs:
 
   tests:
     name: tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-26.04
     needs: lint_and_analysis
     defaults:
       run:
@@ -65,9 +65,9 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.8'
-          cache-dependency-path: 'backend/healthier/poetry.lock'
-          cache: 'poetry'
+          python-version: "3.14"
+          cache-dependency-path: "backend/healthier/poetry.lock"
+          cache: "poetry"
 
       - run: poetry install --no-root
 

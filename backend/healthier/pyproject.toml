@@ -14,7 +14,7 @@ psycopg = "^3.2"
 [tool.poetry.dev-dependencies]
 flake8 = "^5.0.4"
 bandit = "^1.7.8"
-pytest = "^7.1.2"
+pytest = "^9.0.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
